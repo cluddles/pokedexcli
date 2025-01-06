@@ -15,9 +15,6 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fields := cleanInput(str)
-		if len(fields) > 0 {
-			fmt.Printf("Your command was: %s\n", fields[0])
-		}
+		runCommand(str)
 	}
 }
