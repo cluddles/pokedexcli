@@ -12,8 +12,11 @@ func TestCleanInput(t *testing.T) {
 			input:    "  hello  world  ",
 			expected: []string{"hello", "world"},
 		},
+		{
+			input:    "Charmander Bulbasaur PIKACHU",
+			expected: []string{"charmander", "bulbasaur", "pikachu"},
+		},
 	}
-	// add more cases here
 
 	for _, c := range cases {
 		actual := cleanInput(c.input)
@@ -21,20 +24,14 @@ func TestCleanInput(t *testing.T) {
 		length := len(actual)
 		expectedLength := len(c.expected)
 		if length != expectedLength {
-			t.Errorf("got %d slices but expected %d", length, expectedLength)
+			t.Errorf("cleanInput('%s'): got %d slices but expected %d", c.input, length, expectedLength)
 		}
 
-		// Check the length of the actual slice
-		// if they don't match, use t.Errorf to print an error message
-		// and fail the test
 		for i := range actual {
 			word := actual[i]
 			expectedWord := c.expected[i]
-			// Check each word in the slice
-			// if they don't match, use t.Errorf to print an error message
-			// and fail the test
 			if word != expectedWord {
-				t.Errorf("got word '%s' but expected '%s'", word, expectedWord)
+				t.Errorf("cleanInput('%s'): got word '%s' but expected '%s'", c.input, word, expectedWord)
 			}
 		}
 	}
