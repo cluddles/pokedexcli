@@ -1,9 +1,5 @@
 package pokeapi
 
-import (
-	"encoding/json"
-)
-
 // Result of GetLocationAreas call
 type LocationAreasResponse struct {
 	Count     int     `json:"count"`
@@ -17,15 +13,9 @@ type LocationAreasResponse struct {
 
 // Get paginated list of locations
 func GetLocationAreas(client Client, url *string) (*LocationAreasResponse, error) {
-	data, err := client.DoGet(ApiUrlOrOverride("/location-area/", url))
-	if err != nil {
-		return nil, err
-	}
-
 	var result *LocationAreasResponse
-	if err := json.Unmarshal(data, &result); err != nil {
+	if err := client.GetAndUnmarshal(ApiUrlOrOverride("/location-area/", url), &result); err != nil {
 		return nil, err
 	}
-
 	return result, nil
 }

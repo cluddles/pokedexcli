@@ -1,6 +1,7 @@
 package pokeapi
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -19,7 +20,7 @@ func NewClient() Client {
 
 // Retrieve data from the given URL.
 // If cached, the cached data will be returned instead.
-func (c *Client) DoGet(url string) ([]byte, error) {
+func (c *Client) Get(url string) ([]byte, error) {
 	data, exists := c.cache.Get(url)
 	if exists {
 		return data, nil
@@ -33,7 +34,7 @@ func (c *Client) DoGet(url string) ([]byte, error) {
 	defer res.Body.Close()
 
 	if res.StatusCode >= 300 {
-		return []byte{}, fmt.Errorf("response status code: %d, %s", res.StatusCode, res.Status)
+		return []byte{}, fmt.Errorf("unsuccessful response: %s", res.Status)
 	}
 
 	data, err = io.ReadAll(res.Body)
@@ -47,6 +48,18 @@ func (c *Client) DoGet(url string) ([]byte, error) {
 	c.cache.Add(url, data)
 
 	return data, nil
+}
+
+// Convenience method to perform GET and unmarshal (successful) response into result
+func (c *Client) GetAndUnmarshal(url string, result any) error {
+	data, err := c.Get(url)
+	if err != nil {
+		return err
+	}
+	if err := json.Unmarshal(data, &result); err != nil {
+		return err
+	}
+	return nil
 }
 
 const baseUrl = "https://pokeapi.co/api/v2"

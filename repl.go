@@ -9,9 +9,60 @@ import (
 	"strings"
 )
 
+type config struct {
+	client               pokeapi.Client
+	locationAreasNextUrl *string
+	locationAreasPrevUrl *string
+	caught               map[string]pokeapi.Pokemon
+}
+
+type cliCommand struct {
+	name        string
+	description string
+	callback    func([]string, *config) error
+}
+
+var commandRegistry map[string]cliCommand
+
+func init() {
+	commandRegistry = map[string]cliCommand{
+		"exit": {
+			name:        "exit",
+			description: "Exit the Pokedex",
+			callback:    commandExit,
+		},
+		"help": {
+			name:        "help",
+			description: "Displays a help message",
+			callback:    commandHelp,
+		},
+		"map": {
+			name:        "map",
+			description: "Displays next 20 locations",
+			callback:    commandMap,
+		},
+		"mapb": {
+			name:        "map back",
+			description: "Displays prev 20 locations",
+			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore",
+			description: "List pokemon in the named location",
+			callback:    commandExplore,
+		},
+		"catch": {
+			name:        "catch",
+			description: "Try to catch the named pokemon",
+			callback:    commandCatch,
+		},
+	}
+}
+
 func replLoop() {
 	cfg := &config{
 		client: pokeapi.NewClient(),
+		caught: map[string]pokeapi.Pokemon{},
 	}
 	reader := bufio.NewReader(os.Stdin)
 	for {
@@ -43,10 +94,4 @@ func runCommand(text string, cfg *config) {
 
 func cleanInput(text string) []string {
 	return strings.Fields(strings.ToLower(text))
-}
-
-type config struct {
-	client               pokeapi.Client
-	locationAreasNextUrl *string
-	locationAreasPrevUrl *string
 }

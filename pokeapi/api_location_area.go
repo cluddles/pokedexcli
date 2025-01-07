@@ -1,9 +1,5 @@
 package pokeapi
 
-import (
-	"encoding/json"
-)
-
 // Result of GetLocationArea call
 type LocationAreaResponse struct {
 	EncounterMethodRates []struct {
@@ -59,16 +55,10 @@ type LocationAreaResponse struct {
 }
 
 // Get details info on a single location
-func GetLocationArea(client Client, name string) (*LocationAreaResponse, error) {
-	data, err := client.DoGet(ApiUrl("/location-area/" + name))
-	if err != nil {
-		return nil, err
-	}
-
+func GetLocationArea(client Client, loc string) (*LocationAreaResponse, error) {
 	var result *LocationAreaResponse
-	if err := json.Unmarshal(data, &result); err != nil {
+	if err := client.GetAndUnmarshal(ApiUrl("/location-area/"+loc), &result); err != nil {
 		return nil, err
 	}
-
 	return result, nil
 }
