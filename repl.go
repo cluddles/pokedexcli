@@ -38,12 +38,12 @@ func init() {
 		},
 		"map": {
 			name:        "map",
-			description: "Displays next 20 locations",
+			description: "Show next page of locations",
 			callback:    commandMap,
 		},
 		"mapb": {
 			name:        "map back",
-			description: "Displays prev 20 locations",
+			description: "Show previous page of locations",
 			callback:    commandMapb,
 		},
 		"explore": {
