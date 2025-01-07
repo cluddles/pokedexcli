@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 )
 
+// Result of GetLocationAreas call
 type LocationAreasResponse struct {
 	Count     int     `json:"count"`
 	Next      *string `json:"next"`
@@ -14,6 +15,7 @@ type LocationAreasResponse struct {
 	} `json:"results"`
 }
 
+// Get paginated list of locations
 func GetLocationAreas(client Client, url *string) (*LocationAreasResponse, error) {
 	data, err := client.DoGet(ApiUrlOrOverride("/location-area/", url))
 	if err != nil {

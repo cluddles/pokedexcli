@@ -13,7 +13,7 @@ type Client struct {
 
 func NewClient() Client {
 	return Client{
-		cache: NewCache(60*time.Second, 5*time.Second),
+		cache: NewCache(3*time.Minute, 15*time.Second),
 	}
 }
 
@@ -41,8 +41,8 @@ func (c *Client) DoGet(url string) ([]byte, error) {
 		return []byte{}, err
 	}
 
-	// Lets make uncached date really slow so it's obvious...
-	time.Sleep(time.Millisecond * 300)
+	// Make uncached date really slow so it's obvious...
+	//time.Sleep(time.Millisecond * 300)
 
 	c.cache.Add(url, data)
 
