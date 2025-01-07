@@ -2,7 +2,6 @@ package pokeapi
 
 import (
 	"encoding/json"
-	"net/http"
 )
 
 type LocationAreasResponse struct {
@@ -15,27 +14,15 @@ type LocationAreasResponse struct {
 	} `json:"results"`
 }
 
-const baseUrl = "https://pokeapi.co/api/v2"
-
-func GetLocationAreas(url *string) (LocationAreasResponse, error) {
-	var requestUrl string
-	if url != nil {
-		requestUrl = *url
-	} else {
-		requestUrl = baseUrl + "/location-area/"
-	}
-
-	res, err := http.Get(requestUrl)
+func GetLocationAreas(client Client, url *string) (*LocationAreasResponse, error) {
+	data, err := client.DoGet(ApiUrlOrOverride("/location-area/", url))
 	if err != nil {
-		return LocationAreasResponse{}, err
+		return nil, err
 	}
 
-	defer res.Body.Close()
-
-	decoder := json.NewDecoder(res.Body)
-	var result LocationAreasResponse
-	if err := decoder.Decode(&result); err != nil {
-		return LocationAreasResponse{}, err
+	var result *LocationAreasResponse
+	if err := json.Unmarshal(data, &result); err != nil {
+		return nil, err
 	}
 
 	return result, nil

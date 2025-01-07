@@ -10,7 +10,9 @@ import (
 )
 
 func replLoop() {
-	cfg := &config{}
+	cfg := &config{
+		client: pokeapi.NewClient(),
+	}
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Print("Pokedex> ")
@@ -31,7 +33,7 @@ func runCommand(text string, cfg *config) {
 		if exists {
 			err := def.callback(cfg)
 			if err != nil {
-				fmt.Printf("Error: %v\n", err)
+				fmt.Printf("Command error: %v\n", err)
 			}
 		} else {
 			fmt.Printf("Unrecognised command: %s\n", command)
@@ -50,6 +52,7 @@ type cliCommand struct {
 }
 
 type config struct {
+	client               pokeapi.Client
 	locationAreasNextUrl *string
 	locationAreasPrevUrl *string
 }
@@ -98,7 +101,7 @@ func commandHelp(cfg *config) error {
 }
 
 func commandMapCommon(url *string, cfg *config) error {
-	res, err := pokeapi.GetLocationAreas(url)
+	res, err := pokeapi.GetLocationAreas(cfg.client, url)
 	if err != nil {
 		return err
 	}
