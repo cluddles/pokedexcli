@@ -21,6 +21,7 @@ func commandCatch(args []string, cfg *config) error {
 	roll := rand.Int() % 500
 	if roll > difficulty {
 		fmt.Printf("%s was caught!\n", pokemon)
+		fmt.Println("You may now inspect it with the inspect command.")
 		cfg.caught[pokemon] = *res
 	} else {
 		fmt.Printf("%s escaped!\n", pokemon)
