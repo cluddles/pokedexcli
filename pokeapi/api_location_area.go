@@ -1,7 +1,8 @@
 package pokeapi
 
+// Data on a single location.
 // Result of GetLocationArea call
-type LocationAreaResponse struct {
+type LocationArea struct {
 	EncounterMethodRates []struct {
 		EncounterMethod struct {
 			Name string `json:"name"`
@@ -55,8 +56,8 @@ type LocationAreaResponse struct {
 }
 
 // Get details info on a single location
-func GetLocationArea(client Client, loc string) (*LocationAreaResponse, error) {
-	var result *LocationAreaResponse
+func GetLocationArea(client Client, loc string) (*LocationArea, error) {
+	var result *LocationArea
 	if err := client.GetAndUnmarshal(ApiUrl("/location-area/"+loc), &result); err != nil {
 		return nil, err
 	}

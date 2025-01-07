@@ -1,7 +1,8 @@
 package pokeapi
 
+// Data on multiple locations.
 // Result of GetLocationAreas call
-type LocationAreasResponse struct {
+type LocationAreas struct {
 	Count     int     `json:"count"`
 	Next      *string `json:"next"`
 	Previous  *string `json:"previous"`
@@ -12,8 +13,8 @@ type LocationAreasResponse struct {
 }
 
 // Get paginated list of locations
-func GetLocationAreas(client Client, url *string) (*LocationAreasResponse, error) {
-	var result *LocationAreasResponse
+func GetLocationAreas(client Client, url *string) (*LocationAreas, error) {
+	var result *LocationAreas
 	if err := client.GetAndUnmarshal(ApiUrlOrOverride("/location-area/", url), &result); err != nil {
 		return nil, err
 	}

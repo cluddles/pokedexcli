@@ -1,6 +1,7 @@
 package pokeapi
 
-// Result of GetPokemon call
+// Data on a single Pokemon.
+// Result of GetPokemon call.
 type Pokemon struct {
 	Abilities []struct {
 		Ability struct {
