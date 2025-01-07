@@ -13,7 +13,7 @@ func replLoop() {
 	cfg := &config{}
 	reader := bufio.NewReader(os.Stdin)
 	for {
-		fmt.Print("Pokedex > ")
+		fmt.Print("Pokedex> ")
 		text, err := reader.ReadString('\n')
 		if err != nil {
 			log.Fatal(err)
@@ -105,8 +105,8 @@ func commandMapCommon(url *string, cfg *config) error {
 	for _, loc := range res.Locations {
 		fmt.Println(loc.Name)
 	}
-	cfg.locationAreasNextUrl = &res.Next
-	cfg.locationAreasPrevUrl = &res.Previous
+	cfg.locationAreasNextUrl = res.Next
+	cfg.locationAreasPrevUrl = res.Previous
 	return nil
 }
 
